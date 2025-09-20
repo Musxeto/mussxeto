@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
+import HackerRain from './HackerRain'
 import Typewriter from 'typewriter-effect'
 import * as THREE from 'three'
 
@@ -9,30 +10,37 @@ type HeroProps = {
   onOpen?: () => void
 }
 
-function LowPolyMesh() {
-  const meshRef = useRef<THREE.Mesh | null>(null)
+function KnowledgeStack() {
+  const groupRef = useRef<THREE.Group | null>(null)
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  // random vertex displacement to make it 'low-poly' like
-  const geometry = useMemo(() => {
-    // edgy torus-knot shape for a punk/goth feel
-    return new THREE.TorusKnotGeometry(0.8, 0.25, 140, 16)
+  // stack of thin boxes representing docs / vectors — subtle RAG/dev metaphor
+  const layers = useMemo(() => {
+    return Array.from({ length: 6 }).map((_, i) => ({
+      y: i * 0.12,
+      rot: (i - 2.5) * 0.02,
+      scale: 1 - i * 0.04
+    }))
   }, [])
 
   useFrame(({ clock }) => {
-    if (!meshRef.current) return
+    if (!groupRef.current) return
     const t = clock.getElapsedTime()
     if (!prefersReduced) {
-      meshRef.current.rotation.y = t * 0.2
-      meshRef.current.rotation.x = Math.sin(t / 2) * 0.07
-      meshRef.current.position.y = Math.sin(t) * 0.04
+      groupRef.current.rotation.y = Math.sin(t * 0.12) * 0.18
+      groupRef.current.position.y = Math.sin(t * 0.6) * 0.03
     }
   })
 
   return (
-    <mesh ref={meshRef} geometry={geometry} castShadow>
-      <meshStandardMaterial color="#9b111e" flatShading metalness={0.3} roughness={0.5} emissive="#16050a" emissiveIntensity={0.5} />
-    </mesh>
+    <group ref={groupRef}>
+      {layers.map((l, i) => (
+        <mesh key={i} position={[0, l.y - 0.3, 0]} rotation={[l.rot, i * 0.04, 0]} scale={[l.scale, 1, l.scale]} castShadow>
+          <boxGeometry args={[1, 0.08, 0.7]} />
+          <meshStandardMaterial color={i % 2 === 0 ? '#0ea5a0' : '#065f46'} flatShading metalness={0.15} roughness={0.6} emissive={'#042f26'} emissiveIntensity={0.25} />
+        </mesh>
+      ))}
+    </group>
   )
 }
 
@@ -49,7 +57,7 @@ export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.
 
   return (
     <section className="hero-container relative w-full min-h-screen bg-[#0a0c0c] grunge-bg crt-scanlines vignette flex items-center overflow-hidden">
-      <div className="jail-bars grunge-dirt"></div>
+      <HackerRain opacity={0.06} speed={0.9} fontSize={12} className="mix-blend-screen" />
       <div className="container mx-auto flex flex-col md:flex-row items-center gap-6 px-6">
         <div className="hero-text flex-1 text-left text-white">
           <div className="mb-2 text-sm text-gray-400 font-mono">mustafa g.m aka musxeto</div>
@@ -66,7 +74,7 @@ export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.
             <ambientLight intensity={0.6} />
             <directionalLight position={[5, 5, 5]} intensity={0.8} />
             <pointLight position={[-10, -10, -10]} intensity={0.3} />
-            <LowPolyMesh />
+            <KnowledgeStack />
             <OrbitControls enablePan={false} enableZoom={false} enableRotate={true} />
           </Canvas>
 
