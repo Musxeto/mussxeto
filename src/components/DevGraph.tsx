@@ -5,6 +5,7 @@ import { Html } from '@react-three/drei'
 
 type DevGraphProps = {
   mode?: 'process' | 'git'
+  onSelect?: (nodeId: number | null) => void
 }
 
 type Node = {
@@ -13,12 +14,17 @@ type Node = {
   level: number
   parent?: number
   label?: string
+  pid?: number
+  name?: string
+  status?: 'running' | 'sleeping' | 'stopped'
+  cpu?: number // percent
+  mem?: number // MB
 }
 
 type Edge = { from: THREE.Vector3; to: THREE.Vector3; fromIndex?: number; toIndex?: number }
 type Graph = { nodes: Node[]; edges: Edge[] }
 
-export default function DevGraph({ mode = 'process' }: DevGraphProps) {
+export default function DevGraph({ mode = 'process', onSelect }: DevGraphProps) {
   const groupRef = useRef<THREE.Group | null>(null)
   const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -41,6 +47,12 @@ export default function DevGraph({ mode = 'process' }: DevGraphProps) {
 
   // Hovered node for highlight and label
   const [hovered, setHovered] = useState<number | null>(null)
+  // Pinned node (clicked) — persists until clicked again
+  const [pinned, setPinned] = useState<number | null>(null)
+  // expose selection to parent
+  useEffect(() => {
+    if (onSelect) onSelect(pinned)
+  }, [pinned, onSelect])
 
   // Growth/decay progress across levels
   const [progress, setProgress] = useState(0)
@@ -68,7 +80,7 @@ export default function DevGraph({ mode = 'process' }: DevGraphProps) {
   // Node instances
   const instRef = useRef<THREE.InstancedMesh | null>(null)
   const dummy = useMemo(() => new THREE.Object3D(), [])
-  const geom = useMemo(() => new THREE.SphereGeometry(0.08, 16, 16), [])
+  const geom = useMemo(() => new THREE.SphereGeometry(0.12, 18, 18), [])
   const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#10b981', emissive: '#062b25', emissiveIntensity: 0.38, roughness: 0.6, metalness: 0.15 }), [])
 
   useFrame(({ clock }) => {
@@ -110,7 +122,12 @@ export default function DevGraph({ mode = 'process' }: DevGraphProps) {
       const base = sizeForLevel(n.level) * 1.25
       const pulse = prefersReduced ? 1 : 1 + Math.sin(t * 1.1 + i) * 0.06
       const hoverBoost = hovered === i ? 1.18 : 1
-      const s = base * pulse * hoverBoost * breathe * levelVis
+      // pulse when pinned or when CPU is high
+      const isPinned = pinned === i
+      const highCpu = (n.cpu ?? 0) > 12
+      const pinBoost = isPinned ? 1.28 : 1
+      const cpuBoost = highCpu ? 1.12 : 1
+      const s = base * pulse * hoverBoost * breathe * levelVis * pinBoost * cpuBoost
       dummy.scale.set(s, s, s)
       dummy.rotation.set(0, 0, 0)
       dummy.updateMatrix()
@@ -120,7 +137,7 @@ export default function DevGraph({ mode = 'process' }: DevGraphProps) {
   })
 
   return (
-    <group ref={groupRef} scale={[1.25, 1.25, 1.25]}>
+    <group ref={groupRef} scale={[2.0, 2.0, 2.0]}>
       {/* Edges with curves and data flow */}
       {graph.edges.map((e, i) => {
         // edge fades in when both nodes visible
@@ -149,29 +166,69 @@ export default function DevGraph({ mode = 'process' }: DevGraphProps) {
           if (typeof e.instanceId === 'number') setHovered(e.instanceId)
         }}
         onPointerOut={() => setHovered(null)}
+        onPointerDown={(e) => {
+          if (typeof e.instanceId === 'number') {
+            const id = e.instanceId
+            setPinned((prev) => {
+              const next = prev === id ? null : id
+              return next
+            })
+            if (onSelect) onSelect(e.instanceId)
+          }
+        }}
       />
 
       {/* Hover label */}
-      {hovered !== null && graph.nodes[hovered] && (
-        <Html
-          position={[graph.nodes[hovered].pos[0], graph.nodes[hovered].pos[1] + 0.18, graph.nodes[hovered].pos[2]]}
-          center
-          style={{ pointerEvents: 'none' }}
-        >
-          <div style={{
-            fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-            fontSize: '10px',
-            color: 'rgba(183,245,217,0.92)',
-            background: 'rgba(0,0,0,0.5)',
-            border: '1px solid rgba(16,185,129,0.2)',
-            padding: '2px 6px',
-            borderRadius: '4px',
-            backdropFilter: 'blur(3px)'
-          }}>
-            {graph.nodes[hovered].label ?? `node-${graph.nodes[hovered].id}`}
-          </div>
-        </Html>
-      )}
+      {hovered !== null && graph.nodes[hovered] && (() => {
+        const n = graph.nodes[hovered]
+        const statusColor = n.status === 'running' ? '#10b981' : n.status === 'sleeping' ? '#f59e0b' : '#ef4444'
+        return (
+          <Html
+            position={[n.pos[0], n.pos[1] + 0.22, n.pos[2]]}
+            center
+            style={{ pointerEvents: 'none' }}
+          >
+            <div style={{
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, ' +
+                '"Liberation Mono", "Courier New", monospace',
+              fontSize: '12px',
+              color: 'rgba(220,245,228,0.96)',
+              background: 'rgba(2,6,7,0.7)',
+              border: '1px solid rgba(16,185,129,0.14)',
+              padding: '6px 8px',
+              borderRadius: '6px',
+              minWidth: '140px',
+              boxShadow: '0 4px 14px rgba(2,8,6,0.6)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 4 }}>
+                <div style={{ width: 10, height: 10, borderRadius: 6, background: statusColor }} />
+                <div style={{ fontWeight: 700 }}>{n.name ?? n.label ?? `proc-${n.id}`}</div>
+                <div style={{ marginLeft: 'auto', color: 'rgba(183,245,217,0.7)', fontSize: 11 }}>PID {n.pid}</div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'rgba(183,245,217,0.85)' }}>
+                <div>CPU <span style={{ color: 'white', fontWeight: 700 }}>{(n.cpu ?? 0).toFixed(1)}%</span></div>
+                <div>MEM <span style={{ color: 'white', fontWeight: 700 }}>{(n.mem ?? 0).toFixed(0)}MB</span></div>
+              </div>
+            </div>
+          </Html>
+        )
+      })()}
+
+      {/* Per-node tiny PID labels (subtle) */}
+      {graph.nodes.map((n) => {
+        const show = (hovered === n.id) || (pinned === n.id)
+        return show && n.pid ? (
+          <Html key={`pid-${n.id}`} position={[n.pos[0], n.pos[1] - 0.14, n.pos[2]]} center style={{ pointerEvents: 'none' }}>
+            <div style={{
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: 9,
+              color: 'rgba(180,235,205,0.92)',
+              background: 'transparent',
+              padding: '0 2px'
+            }}>{`#${n.pid}`}</div>
+          </Html>
+        ) : null
+      })}
     </group>
   )
 }
@@ -181,10 +238,22 @@ function createGraph(mode: 'process' | 'git'): Graph {
     const lanes = [-0.6, 0, 0.6]
     const nodes: Node[] = []
     let id = 0
+    const names = ['daemon', 'indexer', 'worker', 'git-sync', 'db-writer', 'scheduler']
     for (let lane = 0; lane < lanes.length; lane++) {
       for (let i = 0; i < 6; i++) {
-        const z = -0.12 * lane + (Math.random() - 0.5) * 0.04
-        nodes.push({ id: id++, pos: [i * 0.32 - 1.0, lanes[lane] * 0.8, z], level: lane, label: `branch-${lane}:${i}` })
+        const z = -0.12 * lane + (Math.random() - 0.5) * 0.06
+        const name = names[(i + lane) % names.length]
+        nodes.push({
+          id: id++,
+          pos: [i * 0.32 - 1.0, lanes[lane] * 0.8, z],
+          level: lane,
+          label: `branch-${lane}:${i}`,
+          pid: 2000 + id * 3,
+          name,
+          status: Math.random() > 0.15 ? 'running' : (Math.random() > 0.5 ? 'sleeping' : 'stopped'),
+          cpu: +(Math.random() * 18 + 0.5),
+          mem: +(Math.random() * 140 + 12)
+        })
       }
     }
     // Parents: forward links within lanes + a couple merges
@@ -213,7 +282,20 @@ function createGraph(mode: 'process' | 'git'): Graph {
       const x = (i - (count - 1) / 2) * (spreadX[lvl] / Math.max(1, count - 1))
       const y = -0.35 + lvl * 0.35
       const z = -0.08 * lvl + (Math.random() - 0.5) * 0.06
-      nodes.push({ id: id++, pos: [x, y, z], level: lvl, label: `proc-${lvl}:${i}` })
+      const pid = 1000 + id * 7
+      const names = ['init', 'sysd', 'api', 'worker', 'renderer', 'ethread', 'logger']
+      const name = names[(i + lvl) % names.length]
+      nodes.push({
+        id: id++,
+        pos: [x, y, z],
+        level: lvl,
+        label: `proc-${lvl}:${i}`,
+        pid,
+        name,
+        status: Math.random() > 0.12 ? 'running' : 'sleeping',
+        cpu: +(Math.random() * (lvl === 0 ? 2 : 12) + (lvl === 0 ? 0.2 : 0.5)),
+        mem: +(Math.random() * (lvl === 0 ? 10 : 120) + (lvl === 0 ? 6 : 8))
+      })
     }
   }
   const edges: Edge[] = []
@@ -279,7 +361,8 @@ function EdgeCurve({ from, to, highlight, curved, alpha = 1 }: { from: THREE.Vec
 }
 
 function sizeForLevel(level: number) {
-  return 0.10 - level * 0.012
+  // larger base size and slightly stronger falloff per level
+  return 0.18 - level * 0.02
 }
 
 function v(p: [number, number, number]) {

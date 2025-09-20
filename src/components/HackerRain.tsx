@@ -5,15 +5,20 @@ type HackerRainProps = {
   opacity?: number
   fontSize?: number
   speed?: number
+  trailLength?: number
+  clearStrength?: number
+  headGlow?: boolean
   className?: string
 }
 
-// Subtle matrix-like code rain; respects prefers-reduced-motion
 export default function HackerRain({
   color = '#10b981',
-  opacity = 0.08,
+  opacity = 0.12,
   fontSize = 14,
   speed = 1,
+  trailLength = 8,
+  clearStrength = 0.18,
+  headGlow = true,
   className = ''
 }: HackerRainProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -36,10 +41,10 @@ export default function HackerRain({
     canvas.style.height = height + 'px'
     ctx.scale(dpr, dpr)
 
-    const chars = '01#$%<>/\\=+*'.split('')
+  const chars = ['0', '1']
     const columnWidth = fontSize
     const columns = Math.floor(width / columnWidth)
-    const drops = new Array(columns).fill(0).map(() => Math.floor(Math.random() * height))
+  const drops = new Array(columns).fill(0).map(() => Math.floor(Math.random() * height / fontSize))
 
     ctx.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
 
@@ -47,22 +52,47 @@ export default function HackerRain({
     const draw = (time: number) => {
       const delta = Math.min(33, time - lastTime)
       lastTime = time
-      // subtle fade to create trails
-      ctx.fillStyle = `rgba(0, 0, 0, ${Math.max(0.04, 0.08 - opacity * 0.2)})`
+      // stronger fade so old characters go away quickly (configurable)
+      ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(0.6, Math.max(0.06, clearStrength * (prefersReduced ? 1.2 : 1)))})`
       ctx.fillRect(0, 0, width, height)
 
-      ctx.fillStyle = color
-      ctx.globalAlpha = opacity
       for (let i = 0; i < columns; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)]
         const x = i * columnWidth
-        const y = drops[i] * fontSize
-        ctx.fillText(text, x, y)
-        const step = prefersReduced ? 0 : (1 + Math.random() * 0.8) * speed * (delta / 16)
+        const yHead = drops[i] * fontSize
+
+        // draw bright head
+        ctx.fillStyle = color
+        ctx.globalAlpha = Math.min(1, opacity * 1.4)
+        if (headGlow && !prefersReduced) {
+          ctx.shadowColor = color
+          ctx.shadowBlur = 8
+        } else {
+          ctx.shadowBlur = 0
+        }
+        ctx.fillText(chars[(Math.random() * 2) | 0], x, yHead)
+
+        // draw trailing digits with decreasing alpha
+        const tl = prefersReduced ? Math.min(2, trailLength) : trailLength
+        ctx.shadowBlur = 0
+        for (let t = 1; t <= tl; t++) {
+          const y = yHead - t * fontSize
+          if (y < -fontSize) break
+          const a = opacity * (1 - t / (tl + 1))
+          ctx.globalAlpha = a
+          ctx.fillStyle = color
+          ctx.fillText(chars[(Math.random() * 2) | 0], x, y)
+        }
+
+        // advance the head
+        const step = prefersReduced ? 0.6 : (1 + Math.random() * 0.8) * speed * (delta / 16)
         drops[i] += step
-        if (y > height && Math.random() > 0.975) drops[i] = 0
+        if (yHead > height + tl * fontSize && Math.random() > 0.92) {
+          // restart above the top for a seamless entry
+          drops[i] = -Math.floor(Math.random() * tl)
+        }
       }
       ctx.globalAlpha = 1
+      ctx.shadowBlur = 0
       rafRef.current = requestAnimationFrame(draw)
     }
     rafRef.current = requestAnimationFrame(draw)
@@ -84,7 +114,7 @@ export default function HackerRain({
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', onResize)
     }
-  }, [color, opacity, fontSize, speed])
+  }, [color, opacity, fontSize, speed, trailLength, clearStrength, headGlow])
 
   return <canvas ref={canvasRef} className={`pointer-events-none absolute inset-0 ${className}`} aria-hidden />
 }
