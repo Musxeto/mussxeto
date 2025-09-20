@@ -35,8 +35,8 @@ export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.
           </div>
         </div>
 
-        <div className="hero-visual flex-1 w-full max-w-md h-64 md:h-80 rounded-lg overflow-hidden bg-transparent">
-          <Canvas shadows camera={{ position: [0, 0, 4], fov: 50 }}>
+        <div className="hero-visual flex-1 w-full max-w-2xl h-80 md:h-[28rem] rounded-lg overflow-hidden bg-transparent">
+          <Canvas shadows camera={{ position: [0, 0, 5.5], fov: 52 }}>
             <ambientLight intensity={0.6} />
             <directionalLight position={[5, 5, 5]} intensity={0.8} />
             <pointLight position={[-10, -10, -10]} intensity={0.3} />
