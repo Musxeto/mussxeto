@@ -43,12 +43,12 @@ export default function FooterEOF() {
     <footer className="relative border-t border-[rgba(16,185,129,0.08)] bg-[rgba(3,7,10,0.65)] backdrop-blur">
       <div className="absolute inset-0 bg-[url('/grid-ghost.svg')] opacity-5 pointer-events-none" />
 
-      <div className="relative container mx-auto px-6 py-8 text-gray-300">
-        <div className="flex flex-col md:flex-row items-center md:items-end gap-4 md:gap-6 justify-between">
+      <div className="relative container mx-auto px-4 sm:px-6 py-6 sm:py-8 text-gray-300">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-3 md:gap-6 justify-between">
           {/* Build info */}
           <div className="flex flex-col gap-2">
-            <div className="font-mono text-xs text-[#9ddfbe]">// EOF</div>
-            <div className="flex items-center flex-wrap gap-3 text-sm">
+            <div className="font-mono text-[11px] sm:text-xs text-[#9ddfbe]">// EOF</div>
+            <div className="flex items-center flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm">
               <span className="text-gray-400">Built with</span>
               <ul className="flex items-center gap-3">
                 {buildItems.map((b) => (
@@ -57,7 +57,7 @@ export default function FooterEOF() {
                       <img
                         src={b.icon}
                         alt={b.label}
-                        className="w-4 h-4 select-none"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 select-none"
                         onError={(e) => {
                           const el = e.currentTarget
                           el.style.display = 'none'
@@ -66,11 +66,11 @@ export default function FooterEOF() {
                         }}
                       />
                     ) : null}
-                    <span className="hidden text-gray-300 text-xs px-1 py-0.5 rounded border border-white/10 bg-white/5">
+                    <span className="hidden text-gray-300 text-[11px] sm:text-xs px-1 py-0.5 rounded border border-white/10 bg-white/5">
                       {b.label}
                     </span>
                     {!b.icon ? (
-                      <span className="text-gray-300 text-xs px-1 py-0.5 rounded border border-white/10 bg-white/5">
+                      <span className="text-gray-300 text-[11px] sm:text-xs px-1 py-0.5 rounded border border-white/10 bg-white/5">
                         {b.label}
                       </span>
                     ) : null}
@@ -79,7 +79,7 @@ export default function FooterEOF() {
               </ul>
             </div>
 
-            <div className="mt-2 flex items-center gap-3 text-sm">
+            <div className="mt-2 flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
               <span ref={statusRef} className="relative inline-block">
                 <span className="text-gray-400">status:</span>{' '}
                 <button
@@ -88,7 +88,7 @@ export default function FooterEOF() {
                     e.stopPropagation()
                     setOpenStatus((v) => !v)
                   }}
-                  className="align-baseline font-mono text-xs text-[#9ddfbe] hover:text-white hover:underline decoration-dotted decoration-[#16b88580] transition-colors"
+                  className="align-baseline font-mono text-[11px] sm:text-xs text-[#9ddfbe] hover:text-white hover:underline decoration-dotted decoration-[#16b88580] transition-colors"
                   aria-haspopup="dialog"
                   aria-expanded={openStatus}
                 >
@@ -107,17 +107,17 @@ export default function FooterEOF() {
                       onMouseLeave={() => setOpenStatus(false)}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="text-xs font-mono text-[#9ddfbe]">holy-c-callback</div>
+                        <div className="text-[11px] sm:text-xs font-mono text-[#9ddfbe]">holy-c-callback</div>
                         <button
                           onClick={() => setOpenStatus(false)}
-                          className="text-gray-400 hover:text-white text-xs"
+                          className="text-gray-400 hover:text-white text-[11px] sm:text-xs"
                           aria-label="Close"
                         >
                           ×
                         </button>
                       </div>
-                      <div className="mt-2 text-sm text-gray-200">
-                        <p className="leading-relaxed font-mono text-[13px]">
+                      <div className="mt-2 text-xs sm:text-sm text-gray-200">
+                        <p className="leading-relaxed font-mono text-[12px] sm:text-[13px]">
                           “Linux is designed like a 1970’s mainframe. TempleOS is designed like a C64.”
                           <br />
                           <span className="text-[#9ddfbe]/80">— Terry A. Davis</span>
@@ -138,7 +138,7 @@ export default function FooterEOF() {
                     e.stopPropagation()
                     setOpenRelease((v) => !v)
                   }}
-                  className="font-mono text-xs text-[#9ddfbe] hover:text-white transition-colors"
+                  className="font-mono text-[11px] sm:text-xs text-[#9ddfbe] hover:text-white transition-colors"
                   aria-haspopup="dialog"
                   aria-expanded={openRelease}
                 >
@@ -156,22 +156,22 @@ export default function FooterEOF() {
                       className="absolute bottom-[130%] left-0 z-50 w-72 max-w-[92vw] sm:max-w-[80vw] rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="text-xs font-mono text-[#9ddfbe]">release-notes</div>
+                        <div className="text-[11px] sm:text-xs font-mono text-[#9ddfbe]">release-notes</div>
                         <button
                           onClick={() => setOpenRelease(false)}
-                          className="text-gray-400 hover:text-white text-xs"
+                          className="text-gray-400 hover:text-white text-[11px] sm:text-xs"
                           aria-label="Close"
                         >
                           ×
                         </button>
                       </div>
-                      <div className="mt-2 text-sm text-gray-200">
+                      <div className="mt-2 text-xs sm:text-sm text-gray-200">
                         <p className="leading-relaxed">
                           “Best in the World is just a gimmick. I actually am as good as everyone else pretends to be. It’s scary.” 
                           <br/>
                            <span className="text-[#9ddfbe]/80">— Dean Ambrose</span>
                         </p>
-                        <div className="mt-3 font-mono text-xs text-[#9ddfbe]">
+                        <div className="mt-3 font-mono text-[11px] sm:text-xs text-[#9ddfbe]">
                           $ echo "there_is_no_eof_to_curiosity"
                         </div>
                       </div>
@@ -184,21 +184,21 @@ export default function FooterEOF() {
 
               {/* Free Palestine tag */}
                 <div className="inline-flex items-center gap-2">
-                  <span className="font-mono text-xs text-[#9ddfbe]">free palestine 🇵🇸</span>
+                  <span className="font-mono text-[11px] sm:text-xs text-[#9ddfbe]">free palestine 🇵🇸</span>
                 </div>
             </div>
           </div>
 
           {/* Socials */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <a
               href="https://www.linkedin.com/in/mustafa-gm"
               target="_blank"
               rel="noreferrer noopener"
-              className="group inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+              className="group inline-flex items-center gap-2 text-xs sm:text-sm text-gray-300 hover:text-white"
               aria-label="LinkedIn"
             >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="w-4 h-4 fill-gray-300 group-hover:fill-white">
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-gray-300 group-hover:fill-white">
                 <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.5 8.5h4V23h-4V8.5Zm7 0h3.83v1.98h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.66 4.8 6.11V23h-4v-5.96c0-1.42-.03-3.24-1.98-3.24-1.98 0-2.28 1.55-2.28 3.14V23h-4V8.5Z" />
               </svg>
               <span className="hidden sm:inline">LinkedIn</span>
@@ -208,10 +208,10 @@ export default function FooterEOF() {
               href="https://github.com/musxeto"
               target="_blank"
               rel="noreferrer noopener"
-              className="group inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+              className="group inline-flex items-center gap-2 text-xs sm:text-sm text-gray-300 hover:text-white"
               aria-label="GitHub"
             >
-              <img src="/icons/GitHub.svg" alt="GitHub" className="w-4 h-4 invert group-hover:drop-shadow-[0_0_8px_rgba(22,184,133,0.65)]" />
+              <img src="/icons/GitHub.svg" alt="GitHub" className="w-3.5 h-3.5 sm:w-4 sm:h-4 invert group-hover:drop-shadow-[0_0_8px_rgba(22,184,133,0.65)]" />
               <span className="hidden sm:inline">GitHub</span>
             </a>
 
@@ -219,10 +219,10 @@ export default function FooterEOF() {
               href="https://instagram.com/mustafaxgm"
               target="_blank"
               rel="noreferrer noopener"
-              className="group inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+              className="group inline-flex items-center gap-2 text-xs sm:text-sm text-gray-300 hover:text-white"
               aria-label="Instagram"
             >
-              <svg aria-hidden="true" viewBox="0 0 24 24" className="w-4 h-4 fill-gray-300 group-hover:fill-white">
+              <svg aria-hidden="true" viewBox="0 0 24 24" className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-gray-300 group-hover:fill-white">
                 <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm11.25 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 .002 6.002A3 3 0 0 0 12 9Z" />
               </svg>
               <span className="hidden sm:inline">Instagram</span>
