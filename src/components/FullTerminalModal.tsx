@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { PROJECTS } from '../data/projectsData'
+import { EXPERIENCES } from '../data/experienceData'
 
 type Props = { isOpen: boolean; onClose: () => void }
 
@@ -83,6 +84,35 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
     return map
   }, [])
 
+  const experiencesById = useMemo(() => {
+    const map: Record<string, (typeof EXPERIENCES)[number]> = {}
+    for (const e of EXPERIENCES) map[e.id] = e
+    return map
+  }, [])
+
+  const contactItems = useMemo(() => ({
+    email: 'mustafamalikawan786@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/mustafa-gm',
+    github: 'https://github.com/musxeto',
+    instagram: 'https://instagram.com/mustafaxgm',
+  }), [])
+
+  const educationInfo = useMemo(() => ({
+    degree: "Bachelor’s in Computer Science — Lahore Garrison University",
+    gpa: 'CGPA: 3.60 / 4.00',
+    achievements: "4.0 GPA semester (Spring 2025), Dean's List (Fall 2024)",
+    coursework: [
+      'Data Structures & Algorithms',
+      'Databases',
+      'Operating Systems',
+      'Database Systems',
+      'Artificial Intelligence',
+      'Game Design & Development',
+      'Digital Image Processing',
+      'Programming with Python Lab',
+    ],
+  }), [])
+
   const prompt = useMemo(() => `musxetos@portfolio:${dir} $ `, [dir])
 
   function append(text: string | string[], kind: Line['kind'] = 'out') {
@@ -134,15 +164,27 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
           append('about/  experience/  education/  projects/  contact/  resume.pdf  readme.md  about.txt')
         } else if (dir === '~/projects') {
           append(PROJECTS.map((p) => p.id).join('  '))
+        } else if (dir === '~/experience') {
+          append(EXPERIENCES.map((e) => e.id).join('  '))
+        } else if (dir === '~/about') {
+          append('readme.md  about.txt')
+        } else if (dir === '~/education') {
+          append('degree.txt  gpa.txt  achievements.txt  coursework.txt')
+        } else if (dir === '~/contact') {
+          append('email  linkedin  github  instagram')
         } else {
-          append('Nothing to list here. Try cd ~ or cd projects')
+          append('Nothing to list here.')
         }
         break
       }
       case 'cd': {
         const d = args[0]
         if (!d) { append('usage: cd <directory>', 'err'); break }
-        if (d === '~' || d === '/') setDir('~')
+        if (d === '.' ) { /* no-op */ }
+        else if (d === '..') {
+          if (dir !== '~') setDir('~')
+        }
+        else if (d === '~' || d === '/') setDir('~')
         else if (d === 'projects' || d === '~/projects') setDir('~/projects')
         else if (['about', 'experience', 'education', 'contact'].includes(d)) setDir((`~/${d}`) as typeof dir)
         else append(`zsh: no such file or directory: ${d}`, 'err')
@@ -161,6 +203,30 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
         } else if (dir === '~/projects' && projectsById[f]) {
           const p = projectsById[f]
           append(`${p.title}\n${p.tagline || ''}\nTech: ${p.tech.join(', ')}`)
+        } else if (dir === '~/experience' && experiencesById[f]) {
+          const e = experiencesById[f]
+          append([
+            `${e.role} — ${e.company}`,
+            `${e.start} – ${e.end} | ${e.location}`,
+            e.summary || '',
+            e.bullets.length ? 'Highlights:' : '',
+            ...e.bullets.map((b) => `- ${b}`),
+            e.tech.length ? `Tech: ${e.tech.join(', ')}` : '',
+          ].filter(Boolean) as string[])
+        } else if (dir === '~/education') {
+          if (f === 'degree.txt') append(educationInfo.degree)
+          else if (f === 'gpa.txt') append(educationInfo.gpa)
+          else if (f === 'achievements.txt') append(educationInfo.achievements)
+          else if (f === 'coursework.txt') append(educationInfo.coursework.map((c) => `- ${c}`))
+          else append(`zsh: ${f}: No such file`, 'err')
+        } else if (dir === '~/contact') {
+          const key = f as keyof typeof contactItems
+          if (contactItems[key]) append(`${key}: ${contactItems[key]}`)
+          else append(`zsh: ${f}: No such file`, 'err')
+        } else if (dir === '~/about') {
+          if (f === 'about.txt' || f === 'readme.md') {
+            append(f === 'about.txt' ? 'I’m Ghulam Mustafa (musxeto). Backend-focused, FastAPI/SQLAlchemy/Celery, plus React/TS.' : 'Fullstack dev shipping code that works — web apps, APIs, and AI.')
+          } else append(`zsh: ${f}: No such file`, 'err')
         } else {
           append(`zsh: ${f}: No such file`, 'err')
         }
@@ -179,6 +245,16 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
         } else if (projectsById[target]) {
           window.dispatchEvent(new CustomEvent('open-project-modal', { detail: { id: target } }))
           append(`Opening project: ${target}`)
+        } else if (experiencesById[target]) {
+          const el = document.getElementById('experience')
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+          append(`Opening experience: ${target} (scrolling to timeline) ...`)
+        } else if (dir === '~/contact' && target in contactItems) {
+          const key = target as keyof typeof contactItems
+          const val = contactItems[key]
+          if (key === 'email') window.open(`mailto:${val}`, '_blank')
+          else window.open(val, '_blank')
+          append(`Opening ${target} ...`)
         } else {
           append(`zsh: cannot open ${target}`, 'err')
         }
@@ -189,7 +265,7 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
         if (!m) { append('usage: man <command>', 'err'); break }
         const entries: Record<string, string> = {
           ls: 'ls — list directories/files in current simulated directory.',
-          cd: 'cd — change directory. e.g., cd projects',
+          cd: 'cd — change directory. e.g., cd projects | cd ..',
           cat: 'cat — print a file. cat readme.md | about.txt | resume.pdf | <projectId> (in ~/projects)',
           open: 'open — open sections or projects. open projects | open aalim-ai | open resume',
           clear: 'clear — clear the terminal screen.',
