@@ -18,7 +18,6 @@ export default function About() {
             <div className="container mx-auto px-6">
                 <div className="max-w-4xl mx-auto text-center text-[#b7f5d9] font-mono">
                     <h2 className="text-2xl font-bold mb-2">About / What I do</h2>
-                    <p className="text-sm text-gray-300 mb-6">A quick intro and background — toggle to read more.</p>
                 </div>
 
                 {/* Intro + Image side-by-side (intro comes first; TechGrid moved below) */}
