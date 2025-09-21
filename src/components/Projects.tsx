@@ -329,12 +329,14 @@ export default function Projects() {
         </div>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p) => (
+          {projects.slice(0, 6).map((p) => (
             <ProjectCard key={p.id} p={p} onMore={setActive} />
           ))}
         </div>
 
-        {/* Modal */}
+        {/* Only featured projects shown here (first 6). Remaining projects are on the All Projects page. */}
+
+  {/* Modal */}
         <AnimatePresence>
           {active && (
             <motion.div
@@ -430,7 +432,14 @@ export default function Projects() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        <div className="mt-8 text-center">
+          <a href="/projects" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#16b885] text-black font-medium hover:brightness-95">View all projects</a>
+        </div>
       </div>
     </section>
   )
 }
+
+export { PROJECTS, ProjectCard, Carousel }
+export type { Project }
