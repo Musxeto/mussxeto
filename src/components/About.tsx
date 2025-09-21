@@ -34,14 +34,14 @@ export default function About() {
                                         <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
                                         {' '}over the past few years i’ve worked across multiple companies and internships including{' '}
                                         <a href="https://salvopvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Salvo Integrated Solutions</a>,{' '}
-                                        <a href="https://gcspvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">GCS</a>,{' '}
+                                        <a href="https://gcspvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">GCS Pvt Ltd.</a>,{' '}
                                         <a href="https://chelan.cc/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Chelan Tech</a>, and{' '}
                                         <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
                                         {' '}i’ve built stuff from low-level systems and apis to full web platforms and ml pipelines. most of my work sits at the intersection of backend engineering, web apps, and ai — but i’m not limited to that, i’ve touched mobile dev, databases, and even computer vision.
                                     </p>
 
                                     <p className="text-gray-200 whitespace-pre-line">
-                                        outside code i’m into reading (tech + philosophy + classics), gym and body recomposition, ricing my linux setup, and living on chai/coffee. i’m not about hustle culture or sigma grindset — i prefer consistency, focus, and just building things that actually work.
+                                        outside code i’m into reading (tech + philosophy + classics), gym, ricing my linux setup, and living on chai/coffee. i’m not about hustle culture or grindset — i prefer consistency, focus, and just building things that actually work. sometimes for clients sometimes coz im bored.
                                     </p>
                                 </>
                             ) : (
