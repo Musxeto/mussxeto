@@ -264,9 +264,21 @@ export default function ExperienceTimeline({ title = 'Experience', intro }: { ti
           )}
         </div>
 
-        <div className="mt-10 flex items-center justify-center gap-3">
-          <a href="/resume.pdf" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#16b885] text-black font-medium hover:brightness-95">View Full Resume (PDF)</a>
-          <a href="https://www.linkedin.com/in/mustafa-gm" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded border border-[#16b88566] text-[#9ff1c9] hover:bg-[#0a1515]">Connect on LinkedIn</a>
+        <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 px-6 sm:px-0">
+          <a
+            href="/resume.pdf"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded bg-[#16b885] text-black font-medium text-sm sm:text-base hover:brightness-95"
+          >
+            View Full Resume (PDF)
+          </a>
+          <a
+            href="https://www.linkedin.com/in/mustafa-gm"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded border border-[#16b88566] text-[#9ff1c9] text-sm sm:text-base hover:bg-[#0a1515]"
+          >
+            Connect on LinkedIn
+          </a>
         </div>
       </div>
     </section>

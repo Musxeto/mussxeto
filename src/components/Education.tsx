@@ -10,7 +10,7 @@ function LogoBadge({ src, alt, initials }: { src: string; alt?: string; initials
           src={src}
           alt={alt || initials}
           loading="lazy"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-full"
           onError={() => setFailed(true)}
         />
       ) : (
