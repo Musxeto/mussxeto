@@ -103,7 +103,7 @@ export default function FooterEOF() {
                       transition={{ duration: 0.16, ease: 'easeOut' }}
                       role="dialog"
                       aria-label="Systems status"
-                      className="absolute bottom-[130%] left-0 z-50 w-80 max-w-[80vw] rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
+                      className="absolute bottom-[130%] left-0 z-50 w-80 max-w-[92vw] sm:max-w-[80vw] rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
                       onMouseLeave={() => setOpenStatus(false)}
                     >
                       <div className="flex items-center justify-between">
@@ -153,7 +153,7 @@ export default function FooterEOF() {
                       transition={{ duration: 0.16, ease: 'easeOut' }}
                       role="dialog"
                       aria-label="Release notes"
-                      className="absolute bottom-[130%] left-0 z-50 w-72 rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
+                      className="absolute bottom-[130%] left-0 z-50 w-72 max-w-[92vw] sm:max-w-[80vw] rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
                     >
                       <div className="flex items-center justify-between">
                         <div className="text-xs font-mono text-[#9ddfbe]">release-notes</div>

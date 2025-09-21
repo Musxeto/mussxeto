@@ -8,7 +8,7 @@ export default function ProjectModal({ project, onClose }: { project: Project | 
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -19,7 +19,7 @@ export default function ProjectModal({ project, onClose }: { project: Project | 
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 24, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            className="relative z-10 w-[min(96vw,1040px)] bg-[#0a1313] border border-[#16b88555] rounded-xl shadow-2xl text-[#b7f5d9]"
+            className="relative z-10 w-[min(96vw,1040px)] max-h-[92vh] overflow-y-auto bg-[#0a1313] border border-[#16b88555] rounded-xl shadow-2xl text-[#b7f5d9]"
           >
             {/* Terminal-style header */}
             <div className="px-4 pt-3 pb-2 border-b border-[#16b88533] rounded-t-xl bg-[linear-gradient(180deg,rgba(20,26,26,0.8),rgba(10,19,19,0.8))]">
