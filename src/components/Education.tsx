@@ -4,13 +4,13 @@ import { useState } from 'react'
 function LogoBadge({ src, alt, initials }: { src: string; alt?: string; initials: string }) {
   const [failed, setFailed] = useState(false)
   return (
-    <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full bg-[#0f1a1a] border border-[#16b88533] overflow-hidden shadow-[0_0_14px_rgba(22,184,133,0.25)]">
+    <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden shrink-0 bg-[#0f1a1a] border border-[#16b88533] shadow-[0_0_14px_rgba(22,184,133,0.25)] [clip-path:circle(50%)]">
       {!failed ? (
         <img
           src={src}
           alt={alt || initials}
           loading="lazy"
-          className="w-full h-full object-cover rounded-full"
+          className="block w-full h-full object-cover rounded-full"
           onError={() => setFailed(true)}
         />
       ) : (
