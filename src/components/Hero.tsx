@@ -3,7 +3,7 @@ import { OrbitControls } from '@react-three/drei'
 import HackerRain from './HackerRain'
 import DevGraph from './DevGraph'
 import { useEffect, useState } from 'react'
-import { useTerminal } from './TerminalContext'
+import { useTerminal } from './useTerminal'
 
 type HeroProps = { onOpen?: () => void }
 

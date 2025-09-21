@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
-import { useTerminal } from './TerminalContext'
+import { useTerminal } from './useTerminal'
 
 export default function TopBar() {
   const { openTerminal } = useTerminal()

@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import FullTerminalModal from './FullTerminalModal'
+import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react'
+import FullTerminalModal from './FullTerminalModal';
 
 type TerminalContextValue = {
   openTerminal: () => void
@@ -7,7 +7,7 @@ type TerminalContextValue = {
   toggleTerminal: () => void
 }
 
-const TerminalContext = createContext<TerminalContextValue | undefined>(undefined)
+export const TerminalContext = createContext<TerminalContextValue | undefined>(undefined)
 
 export function TerminalProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -42,8 +42,4 @@ export function TerminalProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function useTerminal() {
-  const ctx = useContext(TerminalContext)
-  if (!ctx) throw new Error('useTerminal must be used within TerminalProvider')
-  return ctx
-}
+// useTerminal hook has been moved to a separate file in the hooks folder.
