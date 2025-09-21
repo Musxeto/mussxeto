@@ -78,6 +78,17 @@ export default function Contact() {
                   </div>
                 </div>
 
+                {/* Instagram */}
+                <div className="flex items-center gap-3">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" className="w-4 h-4 fill-[#9ddfbe] opacity-90">
+                    <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm11.25 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 .002 6.002A3 3 0 0 0 12 9Z" />
+                  </svg>
+                  <div>
+                    <span className="text-[#9ff1c9]">Instagram:</span>{' '}
+                    <a href="https://instagram.com/mustafaxgm" target="_blank" rel="noreferrer" className="underline decoration-dotted hover:text-white">@mustafaxgm</a>
+                  </div>
+                </div>
+
                 {/* Optional: X/Twitter placeholder (hidden by default) */}
                 {/* <div className="flex items-center gap-3">
                   <img src="/icons/x.svg" alt="X" className="w-4 h-4 opacity-90" />
