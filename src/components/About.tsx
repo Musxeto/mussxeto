@@ -1,9 +1,13 @@
 // React import not required with JSX transform
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import TechGrid from './TechGrid'
 
-export default function About() {
+type AboutProps = {
+    fullContent?: ReactNode
+}
+
+export default function About({ fullContent }: AboutProps) {
     // default to full intro as requested
     const [showFull, setShowFull] = useState(true)
     const [toast, setToast] = useState<string | null>(null)
@@ -59,22 +63,28 @@ export default function About() {
                                         exit={{ opacity: 0, y: -6, scale: 0.995 }}
                                         transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
                                     >
-                                        <p className="text-gray-200">
-                                            i’m ghulam mustafa — a final year cs student at{' '}
-                                            <a href="https://lgu.edu.pk/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Lahore Garrison University</a>{' '}
-                                            and currently working as a part-time junior backend developer at{' '}
-                                            <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
-                                            {' '}over the past few years i’ve worked across multiple companies and internships including{' '}
-                                            <a href="https://salvopvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Salvo Integrated Solutions</a>,{' '}
-                                            <a href="https://gcspvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">GCS Pvt Ltd.</a>,{' '}
-                                            <a href="https://chelan.cc/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Chelan Tech</a>, and{' '}
-                                            <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
-                                            {' '}i’ve built stuff from low-level systems and apis to full web platforms and ml pipelines. most of my work sits at the intersection of backend engineering, web apps, and ai — but i’m not limited to that, i’ve touched mobile dev, databases, and even computer vision.
-                                        </p>
+                                        {fullContent ? (
+                                            <div className="text-gray-200 space-y-4">{fullContent}</div>
+                                        ) : (
+                                            <>
+                                                <p className="text-gray-200">
+                                                    i’m ghulam mustafa — a final year cs student at{' '}
+                                                    <a href="https://lgu.edu.pk/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Lahore Garrison University</a>{' '}
+                                                    and currently working as a junior backend developer at{' '}
+                                                    <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
+                                                    {' '}over the past few years i’ve worked across multiple companies and internships including{' '}
+                                                    <a href="https://salvopvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Salvo Integrated Solutions</a>,{' '}
+                                                    <a href="https://gcspvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">GCS Pvt Ltd.</a>,{' '}
+                                                    <a href="https://chelan.cc/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Chelan Tech</a>, and{' '}
+                                                    <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
+                                                    {' '}i’ve built stuff from low-level systems and apis to full web platforms and ml pipelines. most of my work sits at the intersection of backend engineering, web apps, and ai — but i’m not limited to that, i’ve touched mobile dev, databases, and even computer vision.
+                                                </p>
 
-                                        <p className="text-gray-200 whitespace-pre-line">
-                                            outside code i’m into reading (tech + philosophy + classics), gym, ricing my linux setup, and living on chai/coffee. i’m not about hustle culture or grindset — i prefer consistency, focus, and just building things that actually work. sometimes for clients sometimes coz im bored.
-                                        </p>
+                                                <p className="text-gray-200 whitespace-pre-line">
+                                                    outside code i’m into reading (tech + philosophy + classics), gym, ricing my linux setup, and living on chai/coffee. i’m not about hustle culture or grindset — i prefer consistency, focus, and just building things that actually work. sometimes for clients sometimes coz im bored.
+                                                </p>
+                                            </>
+                                        )}
                                     </motion.div>
                                 ) : (
                                     <motion.div
@@ -136,7 +146,7 @@ export default function About() {
                     <div>
                         <div className="font-semibold"> Core Development</div>
                         <div className="text-xs text-gray-300 mt-1">
-                            C · Cplusplus · CSharp · Python · JavaScript (ES6+) · TypeScript · Bash · Assembly
+                            C · C++· C# · Python · JavaScript (ES6+) · TypeScript · Bash · Assembly
                         </div>
                         <div className="text-xs text-gray-400 mt-1">
                             Web & Mobile → React.js · React Native · Django · Flask · FastAPI · Tailwind · HTML5 · CSS3
