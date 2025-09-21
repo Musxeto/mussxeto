@@ -22,10 +22,13 @@ const TECHS: Tech[] = [
   { id: 'firebase', name: 'Firebase', svg: '/icons/Firebase.svg' },
   { id: 'flask', name: 'Flask', svg: '/icons/Flask.svg' },
   { id: 'git', name: 'Git', svg: '/icons/Git.svg' },
+  { id: 'github', name: 'GitHub', svg: '/icons/GitHub.svg' },
+  { id: 'gitlab', name: 'GitLab', svg: '/icons/GitLab.svg' },
   { id: 'html', name: 'HTML5', svg: '/icons/HTML5.svg' },
   { id: 'js', name: 'JavaScript', svg: '/icons/JavaScript.svg' },
   { id: 'linux', name: 'Linux', svg: '/icons/Linux.svg' },
   { id: 'matplotlib', name: 'Matplotlib', svg: '/icons/Matplotlib.svg' },
+  { id: 'jupyter', name: 'Jupyter', svg: '/icons/Jupyter.svg' },
   { id: 'mssql', name: 'MSSQL', svg: '/icons/Microsoft SQL Server.svg' },
   { id: 'mongodb', name: 'MongoDB', svg: '/icons/MongoDB.svg' },
   { id: 'mysql', name: 'MySQL', svg: '/icons/MySQL.svg' },
@@ -60,7 +63,7 @@ function IconPlane({ tech, pos, angle }: { tech: Tech; pos: [number, number, num
   return (
     <group ref={ref} position={pos}>
       {/* Use Html as the visible icon; attach pointer handlers to the DOM node */}
-      <Html center distanceFactor={1.8} occlude>
+  <Html center distanceFactor={2.2}>
         <div
           className="w-14 h-14 flex items-center justify-center cursor-pointer"
           onPointerEnter={(e) => { e.stopPropagation(); setHovered(true) }}
@@ -71,7 +74,7 @@ function IconPlane({ tech, pos, angle }: { tech: Tech; pos: [number, number, num
       </Html>
 
       {hovered && (
-        <Html position={[0, -0.9, 0]} center distanceFactor={1.6} occlude>
+        <Html position={[0, -0.9, 0]} center distanceFactor={1.8}>
           <div className="px-2 py-1 bg-black/70 border border-[rgba(16,185,129,0.12)] text-xs text-[#b7f5d9] font-mono rounded">
             {tech.name}
           </div>
