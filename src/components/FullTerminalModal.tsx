@@ -52,6 +52,7 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
   const [input, setInput] = useState('')
   const [dir, setDir] = useState<'~' | '~/projects' | '~/about' | '~/experience' | '~/education' | '~/contact'>('~')
   const [hist, setHist] = useState<string[]>([])
+  const ptrRef = useRef<number>(-1)
   const outRef = useAutoScroll(lines.length)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -70,7 +71,8 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
       { text: NEOFETCH, kind: 'out' },
     ])
     setDir('~')
-    setHist([])
+  setHist([])
+  ptrRef.current = -1
   // reset history pointer implicitly
     setInput('')
   }, [isOpen])
@@ -91,8 +93,8 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
   function handleEnter(raw: string) {
     const cmd = raw.trim()
     if (!cmd) return
-    setHist((h) => [...h, cmd])
-    setHistIdx(-1)
+  setHist((h) => [...h, cmd])
+  ptrRef.current = -1
     append(`${prompt}${cmd}`, 'sys')
 
     const [base, ...args] = cmd.split(/\s+/)
@@ -233,11 +235,22 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
       setInput('')
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
-      const next = hist.length - 1
-      if (next >= 0) setInput(hist[next])
+      const prev = ptrRef.current
+      const next = prev < 0 ? hist.length - 1 : Math.max(0, prev - 1)
+      ptrRef.current = next
+      setInput(hist[next] ?? input)
     } else if (e.key === 'ArrowDown') {
       e.preventDefault()
-      setInput('')
+      const prev = ptrRef.current
+      if (prev < 0) return
+      const next = prev + 1
+      if (next >= hist.length) {
+        setInput('')
+        ptrRef.current = -1
+      } else {
+        setInput(hist[next])
+        ptrRef.current = next
+      }
     }
   }
 
@@ -253,7 +266,7 @@ export default function FullTerminalModal({ isOpen, onClose }: Props) {
             transition={{ type: 'spring', stiffness: 300, damping: 28 }}
             className="absolute inset-0 flex items-center justify-center p-3 sm:p-6"
           >
-            <div className="w-[min(92vw,1100px)] h-[min(88vh,900px)] rounded-xl border border-[#16b88575] bg-[#0b1312]/95 shadow-[0_0_28px_rgba(22,184,133,0.22)] text-[#b7f5d9] font-mono flex flex-col overflow-hidden">
+            <div className="w-[min(92vw,1100px)] h-[min(88vh,900px)] rounded-xl border border-[#16b88575] bg-[#0b1312]/95 shadow-[0_0_28px_rgba(22,184,133,0.22)] text-[#b7f5d9] font-terminal flex flex-col overflow-hidden">
               {/* Title bar */}
               <div className="px-4 pt-3 pb-2 border-b border-[#16b88533] bg-[linear-gradient(180deg,rgba(20,26,26,0.85),rgba(10,19,19,0.85))] flex items-center gap-2">
                 <button onClick={onClose} className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] border border-[#00000033] shadow-inner" aria-label="Close" />

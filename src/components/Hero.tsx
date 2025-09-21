@@ -2,16 +2,12 @@ import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import HackerRain from './HackerRain'
 import DevGraph from './DevGraph'
-import Typewriter from 'typewriter-effect'
 import { useEffect, useState } from 'react'
 import { useTerminal } from './TerminalContext'
 
-type HeroProps = {
-  commands?: string[]
-  onOpen?: () => void
-}
+type HeroProps = { onOpen?: () => void }
 
-export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.md'], onOpen }: HeroProps) {
+export default function Hero({ onOpen }: HeroProps) {
   const { openTerminal } = useTerminal()
   const [selectedNode, setSelectedNode] = useState<number | null>(null)
   useEffect(() => {
@@ -58,31 +54,35 @@ export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.
           )}
 
           <div className="terminal-overlay absolute top-6 right-6 md:top-10 md:right-10">
-            <div
-              className="terminal rounded-md bg-[rgba(0,0,0,0.55)] border border-[#153f2e] px-3 py-2 text-sm text-[#b7f5d9] font-mono shadow-lg backdrop-blur"
-              role="button"
-              tabIndex={0}
-              onClick={handleOpen}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleOpen()
+            <form
+              className="terminal rounded-md bg-[rgba(0,0,0,0.55)] border border-[#153f2e] px-3 py-2 text-sm text-[#b7f5d9] font-mono shadow-lg backdrop-blur flex items-center gap-2"
+              onSubmit={(e) => {
+                e.preventDefault()
+                const fd = new FormData(e.currentTarget)
+                const val = (fd.get('q') as string || '').trim().toLowerCase()
+                if (!val) return
+                if (['terminal', 'shell', 'zsh', 'bash', 'console'].includes(val)) {
+                  openTerminal()
+                } else if (['projects', 'open projects'].includes(val)) {
+                  document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+                } else if (['about', 'experience', 'education', 'contact'].includes(val)) {
+                  document.getElementById(val)?.scrollIntoView({ behavior: 'smooth' })
+                } else {
+                  openTerminal()
+                }
+                e.currentTarget.reset()
               }}
-              aria-label="Open projects or show more information"
             >
-              <div className="prompt flex items-center gap-2">
-                <span className="prompt-symbol text-[#10b981]">&gt;</span>
-                <div className="typewriter max-w-[14rem] overflow-hidden">
-                  <Typewriter
-                    options={{
-                      strings: commands,
-                      autoStart: true,
-                      loop: true,
-                      delay: 40,
-                      deleteSpeed: 20,
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
+              <span className="prompt-symbol text-[#10b981]">&gt;</span>
+              <input
+                name="q"
+                placeholder="type 'terminal' and Enter"
+                className="bg-transparent outline-none placeholder:text-gray-500 w-48"
+                autoCapitalize="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+            </form>
           </div>
         </div>
       </div>
