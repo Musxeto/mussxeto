@@ -1,7 +1,15 @@
 // React import not required with JSX transform
+import { useState } from 'react'
 import TechGrid from './TechGrid'
 
 export default function About() {
+    // default to full intro as requested
+    const [showFull, setShowFull] = useState(true)
+
+    // We'll render the full intro as JSX so we can inline company links where they're mentioned
+
+    const shortIntro = `final year cs student at Lahore garrison univeristy. junior backend dev at smart computings. i build software end-to-end — backend, web, mobile, and ml.`
+
     return (
         <section id="about" className="relative w-full py-16 bg-[linear-gradient(180deg,rgba(3,6,6,0.6),rgba(2,4,4,0.8))]">
             {/* subtle ghost grid background instead of HackerRain for visual variety */}
@@ -10,20 +18,74 @@ export default function About() {
             <div className="container mx-auto px-6">
                 <div className="max-w-4xl mx-auto text-center text-[#b7f5d9] font-mono">
                     <h2 className="text-2xl font-bold mb-2">About / What I do</h2>
-                    <p className="text-sm text-gray-300 mb-6">
-                        I write code across the stack — from bare-metal C and Bash scripts to modern web apps,
-                        AI systems, and automation pipelines. My work spans fullstack development, machine learning,
-                        and tooling for real-world use. This section highlights the languages, frameworks, and
-                        platforms I build with daily.
-                    </p>
+                    <p className="text-sm text-gray-300 mb-6">A quick intro and background — toggle to read more.</p>
                 </div>
 
+                {/* Intro + Image side-by-side (intro comes first; TechGrid moved below) */}
+                <div className="mt-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-start text-[#b7f5d9] font-mono">
+                    <div className="md:col-span-2 text-sm space-y-4">
+                        <div className="prose prose-invert text-sm">
+                            {showFull ? (
+                                <>
+                                    <p className="text-gray-200">
+                                        i’m ghulam mustafa — a final year cs student at{' '}
+                                        <a href="https://lgu.edu.pk/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Lahore Garrison University</a>{' '}
+                                        and currently working as a part-time junior backend developer at{' '}
+                                        <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
+                                        {' '}over the past few years i’ve worked across multiple companies and internships including{' '}
+                                        <a href="https://salvopvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Salvo Integrated Solutions</a>,{' '}
+                                        <a href="https://gcspvt.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">GCS</a>,{' '}
+                                        <a href="https://chelan.cc/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Chelan Tech</a>, and{' '}
+                                        <a href="https://smartcomputings.com/" target="_blank" rel="noreferrer" className="text-[#9ff1c9] underline">Smart Computings</a>.
+                                        {' '}i’ve built stuff from low-level systems and apis to full web platforms and ml pipelines. most of my work sits at the intersection of backend engineering, web apps, and ai — but i’m not limited to that, i’ve touched mobile dev, databases, and even computer vision.
+                                    </p>
 
-                <div className="mt-8">
-                    <TechGrid radius={3.2} speed={0.14} />
+                                    <p className="text-gray-200 whitespace-pre-line">
+                                        outside code i’m into reading (tech + philosophy + classics), gym and body recomposition, ricing my linux setup, and living on chai/coffee. i’m not about hustle culture or sigma grindset — i prefer consistency, focus, and just building things that actually work.
+                                    </p>
+                                </>
+                            ) : (
+                                <p className="text-gray-200">{shortIntro}</p>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-2 justify-between">
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setShowFull(true)}
+                                    className={`text-xs px-3 py-1 rounded ${showFull ? 'bg-[#0b6b4a] text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+                                >
+                                    Full
+                                </button>
+
+                                <button
+                                    onClick={() => setShowFull(false)}
+                                    className={`text-xs px-3 py-1 rounded ${!showFull ? 'bg-[#0b6b4a] text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+                                >
+                                    TL;DR
+                                </button>
+                            </div>
+
+                            {/* company links moved inline into the paragraph above */}
+                        </div>
+                    </div>
+
+                    {/* Placeholder image / avatar */}
+                    <div className="flex justify-center md:justify-end">
+                       <img
+                            src="/me.jpeg"
+                            alt="Ghulam Mustafa"
+                            onError={(e) => {
+                                // if image fails to load, replace with a fallback grey box
+                                const target = e.currentTarget as HTMLImageElement
+                                target.replaceWith(document.createElement('div'))
+                            }}
+                            className="w-44 h-44 rounded-lg border border-gray-600 object-cover shadow-sm"
+                        />
+                    </div>
                 </div>
 
-                <div className="mt-8 max-w-3xl mx-auto text-[#b7f5d9] font-mono text-sm space-y-4">
+                <div className="mt-6 max-w-3xl mx-auto text-[#b7f5d9] font-mono text-sm space-y-4">
                     <div>
                         <div className="font-semibold"> Core Development</div>
                         <div className="text-xs text-gray-300 mt-1">
@@ -40,23 +102,25 @@ export default function About() {
                     <div>
                         <div className="font-semibold"> AI & Data</div>
                         <div className="text-xs text-gray-300 mt-1">
-                            TensorFlow · Keras · OpenCV · Pandas · NumPy · Matplotlib
+                            TensorFlow · ScikitLearn · OpenCV · Pandas · NumPy · Matplotlib
                         </div>
                         <div className="text-xs text-gray-400 mt-1">
                             Areas → Machine Learning · Deep Learning · Computer Vision · Data Analysis
                         </div>
                     </div>
-
                     <div>
                         <div className="font-semibold"> Tools & Workflow</div>
                         <div className="text-xs text-gray-300 mt-1">
                             Git · Docker · Linux (Mint/Ubuntu) · VSCode · CLI-first workflows
                         </div>
-                        <div className="text-xs text-gray-400 mt-1">
-                            Agile / Scrum (RMA internship experience)
-                        </div>
                     </div>
                 </div>
+                {/* Technologies / TechGrid placed after intro as requested */}
+                <div className="mt-8">
+                    <TechGrid radius={3.2} speed={0.14} />
+                </div>
+
+
 
             </div>
         </section>
