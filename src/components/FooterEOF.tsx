@@ -192,7 +192,7 @@ export default function FooterEOF() {
           {/* Socials */}
           <div className="flex items-center gap-4">
             <a
-              href="https://www.linkedin.com/in/ghulammustafa"
+              href="https://www.linkedin.com/in/mustafa-gm"
               target="_blank"
               rel="noreferrer noopener"
               className="group inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"

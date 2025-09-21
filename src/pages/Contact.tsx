@@ -65,7 +65,7 @@ export default function Contact() {
                   </svg>
                   <div>
                     <span className="text-[#9ff1c9]">LinkedIn:</span>{' '}
-                    <a href="https://www.linkedin.com/in/ghulammustafa" target="_blank" rel="noreferrer noopener" className="underline decoration-dotted hover:text-white">/in/ghulammustafa</a>
+                    <a href="https://www.linkedin.com/in/mustafa-gm" target="_blank" rel="noreferrer noopener" className="underline decoration-dotted hover:text-white">/in/mustafa-gm</a>
                   </div>
                 </div>
 
