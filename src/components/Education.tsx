@@ -31,7 +31,7 @@ function TechIcons({ tech }: { tech: string[] }) {
     Linux: '/icons/Linux.svg',
     Bash: '/icons/Bash.svg',
     'C': '/icons/C.svg',
-    'C++': '/icons/C++ (CPlusPlus).svg',
+    'Cplusplus': '/icons/Cplusplus.svg',
     'CSharp': '/icons/CSharp.svg',
     JavaScript: '/icons/JavaScript.svg',
   }
@@ -67,7 +67,7 @@ export default function Education({ title = 'Education', intro = 'My academic fo
     'Digital Image Processing',
     'Programming with Python Lab',
   ]
-  const keySkills = ['Python', 'OpenCV', 'MySQL', 'Microsoft SQL Server', 'C', 'C++', 'CSharp', 'Bash']
+  const keySkills = ['Python', 'OpenCV', 'MySQL', 'Microsoft SQL Server', 'C', 'Cplusplus', 'CSharp', 'Bash', 'Unity']
 
   return (
     <section id="education" className="relative w-full py-16 bg-[linear-gradient(180deg,rgba(2,6,6,0.5),rgba(1,3,3,0.8))]">
