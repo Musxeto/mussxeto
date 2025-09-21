@@ -4,6 +4,7 @@ import HackerRain from './HackerRain'
 import DevGraph from './DevGraph'
 import Typewriter from 'typewriter-effect'
 import { useEffect, useState } from 'react'
+import { useTerminal } from './TerminalContext'
 
 type HeroProps = {
   commands?: string[]
@@ -11,6 +12,7 @@ type HeroProps = {
 }
 
 export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.md'], onOpen }: HeroProps) {
+  const { openTerminal } = useTerminal()
   const [selectedNode, setSelectedNode] = useState<number | null>(null)
   useEffect(() => {
     // noop for future side-effects
@@ -18,8 +20,7 @@ export default function Hero({ commands = ['whoami', 'ls projects', 'cat README.
 
   const handleOpen = () => {
     if (onOpen) return onOpen()
-    const el = document.getElementById('projects')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+    openTerminal()
   }
 
   return (

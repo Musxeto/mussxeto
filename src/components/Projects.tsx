@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ProjectModal from './ProjectModal'
 import { PROJECTS } from '../data/projectsData'
 import type { Project } from '../data/projectsData'
@@ -9,6 +9,19 @@ import ProjectCard from './ProjectCard'
 export default function Projects() {
   const [active, setActive] = useState<Project | null>(null)
   const projects = useMemo(() => PROJECTS, [])
+
+  // Listen for terminal open-project-modal events
+  useEffect(() => {
+    function onOpen(e: Event) {
+      const ce = e as CustomEvent
+      const id = ce.detail?.id as string | undefined
+      if (!id) return
+      const p = projects.find((x) => x.id === id)
+      if (p) setActive(p)
+    }
+    window.addEventListener('open-project-modal', onOpen as EventListener)
+    return () => window.removeEventListener('open-project-modal', onOpen as EventListener)
+  }, [projects])
 
   return (
     <section id="projects" className="relative w-full py-16 bg-[linear-gradient(180deg,rgba(3,6,6,0.6),rgba(2,4,4,0.8))]">
