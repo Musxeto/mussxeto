@@ -2,16 +2,22 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function FooterEOF() {
-  const [open, setOpen] = useState(false)
+  const [openRelease, setOpenRelease] = useState(false)
+  const [openStatus, setOpenStatus] = useState(false)
   const eggRef = useRef<HTMLSpanElement | null>(null)
+  const statusRef = useRef<HTMLSpanElement | null>(null)
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') {
+        setOpenRelease(false)
+        setOpenStatus(false)
+      }
     }
     function onClick(e: MouseEvent) {
-      if (!eggRef.current) return
-      if (!eggRef.current.contains(e.target as Node)) setOpen(false)
+      const target = e.target as Node
+      if (eggRef.current && !eggRef.current.contains(target)) setOpenRelease(false)
+      if (statusRef.current && !statusRef.current.contains(target)) setOpenStatus(false)
     }
     window.addEventListener('keydown', onKey)
     window.addEventListener('click', onClick)
@@ -20,6 +26,12 @@ export default function FooterEOF() {
       window.removeEventListener('click', onClick)
     }
   }, [])
+
+  useEffect(() => {
+    if (!openStatus) return
+    const t = setTimeout(() => setOpenStatus(false), 4000)
+    return () => clearTimeout(t)
+  }, [openStatus])
 
   const buildItems: Array<{ label: string; icon?: string }> = [
     { label: 'React', icon: '/icons/React.svg' },
@@ -65,22 +77,75 @@ export default function FooterEOF() {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="mt-2 flex items-center gap-3 text-sm">
+              <span ref={statusRef} className="relative inline-block">
+                <span className="text-gray-400">status:</span>{' '}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setOpenStatus((v) => !v)
+                  }}
+                  className="align-baseline font-mono text-xs text-[#9ddfbe] hover:text-white hover:underline decoration-dotted decoration-[#16b88580] transition-colors"
+                  aria-haspopup="dialog"
+                  aria-expanded={openStatus}
+                >
+                  [systems_nominal]
+                </button>
+                <AnimatePresence>
+                  {openStatus && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                      transition={{ duration: 0.16, ease: 'easeOut' }}
+                      role="dialog"
+                      aria-label="Systems status"
+                      className="absolute bottom-[130%] left-0 z-50 w-80 max-w-[80vw] rounded-md border border-[#16b88555] bg-[#0a1313] shadow-[0_0_28px_rgba(22,184,133,0.22)] p-3"
+                      onMouseLeave={() => setOpenStatus(false)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs font-mono text-[#9ddfbe]">holy-c-callback</div>
+                        <button
+                          onClick={() => setOpenStatus(false)}
+                          className="text-gray-400 hover:text-white text-xs"
+                          aria-label="Close"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <div className="mt-2 text-sm text-gray-200">
+                        <p className="leading-relaxed font-mono text-[13px]">
+                          “Linux is designed like a 1970’s mainframe. TempleOS is designed like a C64.”
+                          <br />
+                          <span className="text-[#9ddfbe]/80">— Terry A. Davis</span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </span>
+
               <span className="text-gray-500">•</span>
+
+              {/* Release notes Easter egg */}
               <span ref={eggRef} className="relative inline-block">
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setOpen((v) => !v)
+                    setOpenRelease((v) => !v)
                   }}
                   className="font-mono text-xs text-[#9ddfbe] hover:text-white transition-colors"
                   aria-haspopup="dialog"
-                  aria-expanded={open}
+                  aria-expanded={openRelease}
                 >
                   [v.2.1.0-release]
                 </button>
                 <AnimatePresence>
-                  {open && (
+                  {openRelease && (
                     <motion.div
                       initial={{ opacity: 0, y: 6, scale: 0.98 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -93,7 +158,7 @@ export default function FooterEOF() {
                       <div className="flex items-center justify-between">
                         <div className="text-xs font-mono text-[#9ddfbe]">release-notes</div>
                         <button
-                          onClick={() => setOpen(false)}
+                          onClick={() => setOpenRelease(false)}
                           className="text-gray-400 hover:text-white text-xs"
                           aria-label="Close"
                         >
@@ -102,7 +167,9 @@ export default function FooterEOF() {
                       </div>
                       <div className="mt-2 text-sm text-gray-200">
                         <p className="leading-relaxed">
-                          No bugs, only features. Keep shipping, keep learning.
+                          “Best in the World is just a gimmick. I actually am as good as everyone else pretends to be. It’s scary.” 
+                          <br/>
+                           <span className="text-[#9ddfbe]/80">— Dean Ambrose</span>
                         </p>
                         <div className="mt-3 font-mono text-xs text-[#9ddfbe]">
                           $ echo "there_is_no_eof_to_curiosity"
@@ -112,6 +179,13 @@ export default function FooterEOF() {
                   )}
                 </AnimatePresence>
               </span>
+
+              <span className="text-gray-500">•</span>
+
+              {/* Free Palestine tag */}
+                <div className="inline-flex items-center gap-2">
+                  <span className="font-mono text-xs text-[#9ddfbe]">free palestine 🇵🇸</span>
+                </div>
             </div>
           </div>
 

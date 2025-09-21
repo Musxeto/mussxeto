@@ -34,6 +34,7 @@ function TechIcons({ tech }: { tech: string[] }) {
     'Cplusplus': '/icons/Cplusplus.svg',
     'CSharp': '/icons/CSharp.svg',
     JavaScript: '/icons/JavaScript.svg',
+    Unity: '/icons/Unity.svg',
   }
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2">
