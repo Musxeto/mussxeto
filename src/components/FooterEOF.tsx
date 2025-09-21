@@ -80,7 +80,7 @@ export default function FooterEOF() {
             </div>
 
             <div className="mt-2 flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-              <span ref={statusRef} className="relative inline-block">
+              <span ref={statusRef} className="relative hidden sm:inline-block">
                 <span className="text-gray-400">status:</span>{' '}
                 <button
                   type="button"
@@ -128,10 +128,10 @@ export default function FooterEOF() {
                 </AnimatePresence>
               </span>
 
-              <span className="text-gray-500">•</span>
+              <span className="text-gray-500 hidden sm:inline">•</span>
 
               {/* Release notes Easter egg */}
-              <span ref={eggRef} className="relative inline-block">
+              <span ref={eggRef} className="relative hidden sm:inline-block">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -180,7 +180,7 @@ export default function FooterEOF() {
                 </AnimatePresence>
               </span>
 
-              <span className="text-gray-500">•</span>
+              <span className="text-gray-500 hidden sm:inline">•</span>
 
               {/* Free Palestine tag */}
                 <div className="inline-flex items-center gap-2">
