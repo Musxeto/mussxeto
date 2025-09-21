@@ -136,7 +136,7 @@ export default function About() {
                     <div>
                         <div className="font-semibold"> Core Development</div>
                         <div className="text-xs text-gray-300 mt-1">
-                            C · C++ · C# · Python · JavaScript (ES6+) · TypeScript · Bash · Assembly
+                            C · C++ · CSharp · Python · JavaScript (ES6+) · TypeScript · Bash · Assembly
                         </div>
                         <div className="text-xs text-gray-400 mt-1">
                             Web & Mobile → React.js · React Native · Django · Flask · FastAPI · Tailwind · HTML5 · CSS3

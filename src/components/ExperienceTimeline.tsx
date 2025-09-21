@@ -54,6 +54,7 @@ function TechIcons({ tech }: { tech: string[] }) {
     Redis: '/icons/Redis.svg',
     SQLAlchemy: '/icons/SQLAlchemy.svg',
     AWSS3: '/icons/AWS.svg',
+    Celery: '/icons/celery.svg'
   }
 
   return (

@@ -14,7 +14,7 @@ const TECHS: Tech[] = [
   { id: 'bash', name: 'Bash', svg: '/icons/Bash.svg' },
   { id: 'c', name: 'C', svg: '/icons/C.svg' },
   { id: 'cpp', name: 'C++', svg: '/icons/C++.svg' },
-  { id: 'csharp', name: 'C#', svg: '/icons/C#.svg' },
+  { id: 'csharp', name: 'CSharp', svg: '/icons/CSharp.svg' },
   { id: 'css', name: 'CSS3', svg: '/icons/CSS3.svg' },
   { id: 'django', name: 'Django', svg: '/icons/Django.svg' },
   { id: 'docker', name: 'Docker', svg: '/icons/docker.svg' },

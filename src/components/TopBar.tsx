@@ -8,8 +8,8 @@ export default function TopBar() {
         <Link to="/" className="px-2 py-1 rounded-md bg-[rgba(16,185,129,0.08)] text-[#10b981] font-mono tracking-wider">musxeto</Link>
         <nav className={base}>
           <NavLink to="/projects" className={({ isActive }) => (isActive ? 'text-white font-medium' : 'text-gray-300 hover:text-white')}>Projects</NavLink>
-          <a href="/about" className="text-gray-300 hover:text-white">About</a>
-          <a href="/contact" className="text-gray-300 hover:text-white">Contact</a>
+          <NavLink to="/about" className={({ isActive }) => (isActive ? 'text-white font-medium' : 'text-gray-300 hover:text-white')}>About</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => (isActive ? 'text-white font-medium' : 'text-gray-300 hover:text-white')}>Contact</NavLink>
         </nav>
       </div>
 
