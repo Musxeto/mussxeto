@@ -68,8 +68,17 @@ export default function ProjectModal({ project, onClose }: { project: Project | 
                       </a>
                     )}
                     {project.links?.github && (
-                      <a href={project.links.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs px-3 py-1 rounded border border-[#16b88566] text-[#9ff1c9] hover:bg-[#0a1515] transition-colors">
-                        <img src="/icons/GitHub.svg" alt="GitHub" className="w-3.5 h-3.5" />
+                      <a
+                        href={project.links.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group inline-flex items-center gap-2 text-xs px-3 py-1 rounded border border-[#16b88566] text-[#9ff1c9] hover:bg-[#0a1515] transition-colors"
+                      >
+                        <img
+                          src="/icons/GitHub.svg"
+                          alt="GitHub"
+                          className="w-4 h-4 invert drop-shadow-[0_0_6px_rgba(22,184,133,0.65)] group-hover:drop-shadow-[0_0_10px_rgba(22,184,133,0.95)] transition-[filter]"
+                        />
                         GitHub
                       </a>
                     )}

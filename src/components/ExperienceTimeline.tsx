@@ -265,7 +265,7 @@ export default function ExperienceTimeline({ title = 'Experience', intro }: { ti
 
         <div className="mt-10 flex items-center justify-center gap-3">
           <a href="/resume.pdf" className="inline-flex items-center gap-2 px-4 py-2 rounded bg-[#16b885] text-black font-medium hover:brightness-95">View Full Resume (PDF)</a>
-          <a href="https://www.linkedin.com/in/mus" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded border border-[#16b88566] text-[#9ff1c9] hover:bg-[#0a1515]">Connect on LinkedIn</a>
+          <a href="https://www.linkedin.com/in/mustafa-gm" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded border border-[#16b88566] text-[#9ff1c9] hover:bg-[#0a1515]">Connect on LinkedIn</a>
         </div>
       </div>
     </section>
