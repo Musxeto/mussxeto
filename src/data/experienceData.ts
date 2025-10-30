@@ -16,7 +16,7 @@ export type Experience = {
 export const EXPERIENCES: Experience[] = [
   {
     id: 'smart-computing-junior-backend',
-    role: 'Junior Backend Developer',
+    role: 'Associate Software Engineer',
     company: 'Smart Computing SMC Pvt Ltd',
     companyUrl: '#',
     start: 'Sep 2025',
