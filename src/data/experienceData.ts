@@ -53,7 +53,7 @@ export const EXPERIENCES: Experience[] = [
     company: 'Chelan Technologies',
     companyUrl: '#',
     start: 'Jul 2024',
-    end: 'Present',
+    end: 'Jul 2025',
     location: 'Washington, USA',
     current: true,
     bullets: [
