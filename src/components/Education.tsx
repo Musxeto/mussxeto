@@ -56,7 +56,7 @@ export default function Education({ title = 'Education', intro = 'My academic fo
   const institution = 'Lahore Garrison University'
   const institutionUrl = 'https://lgu.edu.pk'
   const dates = 'Oct 2022 – Jul 2026 (expected)'
-  const gpa = 'CGPA: 3.60 / 4.00'
+  const gpa = 'CGPA: 3.61 / 4.00'
   const achievements = "4.0 GPA semester (Spring 2025), Dean's List (Fall 2024)"
   const coursework = [
     'Data Structures & Algorithms',
@@ -67,6 +67,7 @@ export default function Education({ title = 'Education', intro = 'My academic fo
     'Game Design & Development',
     'Digital Image Processing',
     'Programming with Python Lab',
+    'Computer Vision',
   ]
   const keySkills = ['Python', 'OpenCV', 'MySQL', 'Microsoft SQL Server', 'C', 'Cplusplus', 'CSharp', 'Bash', 'Unity']
 
